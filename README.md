@@ -4,7 +4,6 @@
 
 This repository contains the analysis pipeline used in the study **“Structural and Functional Connectivity Predict the Effects of Direct Brain Stimulation on Memory.”** The project investigates how the *network embedding* of stimulation targets—quantified using normative **structural connectivity**, **functional connectivity**, and their **structure–function congruence**—determines inter-individual variability in stimulation-induced memory enhancement.
 
-The primary focus is on **left lateral temporal cortex (LTC)** stimulation during a verbal free-recall task, contrasting **closed-loop (state-dependent)** stimulation with **random (open-loop)** stimulation. Consistent with the manuscript, the central hypothesis is that **memory enhancement emerges when stimulation is delivered during vulnerable encoding states and propagates along structural pathways embedded within a distributed verbal-encoding network**.
 
 ---
 
@@ -13,7 +12,7 @@ The primary focus is on **left lateral temporal cortex (LTC)** stimulation durin
 * **Closed-loop stimulation**: Electrical stimulation triggered in real time by a classifier detecting low encoding states.
 * **Random stimulation**: Stimulation delivered at randomly selected encoding events, independent of brain state.
 * **Stimulation-related memory change (Δ recall)**: Difference in recall performance between stimulation and non-stimulation lists.
-* **Structural connectivity (SC)**: Normative diffusion tractography–based connectivity profiles estimated using the NeMo framework.
+* **Structural connectivity (SC)**: Normative diffusion tractography–based connectivity profiles estimated using the [NeMo framework](https://github.com/kjamison/nemo).
 * **Functional connectivity (FC)**: Normative task-based fMRI connectivity during verbal encoding.
 * **Structure–function congruence**: Spatial overlap between a stimulation site’s structural connectivity profile and a normative verbal-encoding activation network, quantified using the Dice coefficient.
 
