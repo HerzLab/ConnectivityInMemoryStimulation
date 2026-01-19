@@ -31,14 +31,14 @@ To determine whether the structural embedding of stimulation sites predicts stim
 
 **Methods**
 
-* Input: Normative probabilistic tractography matrices generated with the **NeMo Tool** (HCP-based diffusion data).
+* Input: Normative probabilistic tractography matrices generated with the [**NeMo Tool**](https://kuceyeski-wcm-web.s3.amazonaws.com/upload.html) (HCP-based diffusion data).
 * Each stimulation site is modeled as a 12 mm sphere in MNI space.
-* Pairwise ChaCo values are aggregated to derive a parcel-wise structural connectivity strength profile.
+* Pairwise ChaCo(Change in Connectivity) values are aggregated to derive a parcel-wise structural connectivity strength profile.
 * Correlation analysis (Kendall’s τ) relates structural connectivity strength to Δ recall separately for:
 
   * Closed-loop stimulation
   * Random stimulation
-* Family-wise error is controlled using permutation-based **Tmax correction**.
+* Family-wise error is controlled using permutation-based [**Tmax correction**](https://github.com/mickcrosse/PERMUTOOLS).
 
 **Key Outputs**
 
@@ -81,7 +81,8 @@ To assess whether normative functional connectivity alone predicts stimulation-r
 
 * Normative task-based functional connectivity is computed from healthy participants performing a verbal encoding task.
 * Pearson correlations relate functional connectivity strength to Δ recall.
-* Permutation-based correction is applied across all parcels.
+* Family-wise error is controlled using permutation-based [**Tmax correction**](https://github.com/mickcrosse/PERMUTOOLS).
+
 
 **Key Result (Consistent with the Paper)**
 Although functional connectivity shows qualitative overlap with structural effects, **no functional connectivity effects survive multiple-comparison correction**, and FC does not independently predict memory enhancement in multivariate models.
@@ -92,22 +93,37 @@ Although functional connectivity shows qualitative overlap with structural effec
 
 ```
 ├── src/
-│   └── pipeline/
-│       ├── S1_StructuralConnectivity.m
-│       ├── S2_NetworkCongruence.m
-│       └── S3_FunctionalConnectivity.m
+│ └── pipeline/
+│ ├── S1_StructuralConnectivity.m # Structural connectivity–memory associations
+│ ├── S2_NetworkCongruence.m # Structure–function congruence analysis
+│ └── S3_FunctionalConnectivity.m # Functional connectivity analyses
 │
 ├── data/
-│   ├── NeMo/                  # Normative structural connectivity matrices
-│   ├── Atlases/               # Parcellations and templates (e.g., 438-region atlas)
-│   ├── fMRI/                  # Normative verbal-encoding activation and FC data
-│   └── subjects.xlsx          # Behavioral and stimulation metadata
+│ ├── NeMo/ # Normative structural connectivity matrices (ChaCo outputs)
+│ ├── cocommp438* # Parcellations and templates (438-region atlas variants)
+│ ├── HC_Parcels_ROI_signal.mat # Pre-extracted fMRI timeseries for atlas parcels (healthy controls)
+│ ├── HC_electrode_signal.mat # Pre-extracted fMRI timeseries for stimulation-site ROIs
+│ ├── WL_Active-rest_HC_1mm.nii # Normative functional activation map (Word List > Rest)
+│ └── subjects.xlsx # Behavioral, stimulation, and session-level metadata
 │
 └── outputs/
-    ├── StructuralConnectivity/
-    ├── NetworkCongruence/
-    └── FunctionalConnectivity/
-```
+├── StructuralConnectivity/
+│ ├── Mean_StructuralConnectivity.nii # Group-average structural connectivity strength map
+│ ├── CV_StructuralConnectivity.nii # Inter-subject coefficient of variation (CV) map
+│ ├── StructuralConnectivity_[group]_r.nii# SC–Δrecall correlation maps (e.g., Close, Random)
+│ └── StructuralConnectivity_[group]_r_permu.nii # Permutation-corrected significant clusters (Tmax)
+│
+├── NetworkCongruence/
+│ └── Dice_r_[group].tiff # Heatmaps of Dice–Δrecall correlations
+│ # X-axis: functional network thresholds (wlLevels)
+│ # Y-axis: structural connectivity thresholds (connLevels)
+│ # Markers: * p < 0.05 uncorrected; ** FDR q < 0.05
+│
+└── FunctionalConnectivity/
+├── Mean_Rest_FC.tiff # Normative resting-state FC map
+├── Mean_WL_FC.tiff # Normative task-based FC (Word List)
+├── [Condition]_[Group]_r_p0p05_uncorr.tiff # FC–Δrecall correlation maps
+└── Func_feature.mat # Top weighted parcels/edges from closed-loop analysis```
 
 ---
 
@@ -119,7 +135,6 @@ This codebase is designed to reproduce the **network-level analyses** reported i
 * Disentangle the roles of stimulation timing, structural connectivity, and functional connectivity
 * Provide a reproducible framework for **network-guided neuromodulation research**
 
-Normative connectivity datasets are used throughout; patient-specific connectomes are not required to run the pipeline.
 
 ---
 
@@ -135,4 +150,4 @@ If you use this code, please cite the corresponding paper:
 
 > **[Citation to be added after publication]**
 
-A BibTeX entry and DOI will be inserted here once the article is formally published.
+
