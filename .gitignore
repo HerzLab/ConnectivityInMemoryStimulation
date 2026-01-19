@@ -1,0 +1,105 @@
+# ========================
+# Data & results
+# ========================
+# Explicitly allowing data/ output/ and src/ to be tracked
+# Do NOT add them to this file.
+
+# ====================
+# Operating System Files
+# ====================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ====================
+# IDE and Editor Files
+# ====================
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+
+# MATLAB Specific
+*.asv
+*.m~
+*.mex*
+*.p
+codegen/
+slprj/
+*.autosave
+
+# Python Specific
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+ENV/
+env/
+.venv
+.ipynb_checkpoints
+
+# R Specific
+.Rhistory
+.RData
+.Rapp.history
+.RDataTmp
+.Ruserdata
+.Rproj.user/
+*.Rout
+*.rds
+*.rda
+
+# General Temporary
+*.log
+*.tmp
+*.temp
+*~
+*.swp
+*.bak
+*.backup
