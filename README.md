@@ -108,10 +108,10 @@ Although functional connectivity shows qualitative overlap with structural effec
 │
 └── outputs/
     ├── StructuralConnectivity/
-    │   ├── Mean_StructuralConnectivity.nii        # Group-average structural connectivity strength map
-    │   ├── CV_StructuralConnectivity.nii          # Inter-subject coefficient of variation (CV) map
-    │   ├── StructuralConnectivity_[group]_r.nii   # SC–Δrecall correlation maps (e.g., Close, Random)
-    │   └── StructuralConnectivity_[group]_r_permu.nii # Permutation-corrected significant clusters (Tmax)
+    │   ├── Mean_StructuralConnectivity        # Group-average structural connectivity strength map
+    │   ├── CV_StructuralConnectivity          # Inter-subject coefficient of variation (CV) map
+    │   ├── StructuralConnectivity_[group]_r   # SC–Δrecall correlation maps (e.g., Close, Random)
+    │   └── StructuralConnectivity_[group]_r_permu # Permutation-corrected significant clusters (Tmax)
     │
     ├── NetworkCongruence/
     │   └── Dice_r_[group].tiff                    # Heatmaps of Dice–Δrecall correlations
