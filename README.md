@@ -1,95 +1,139 @@
-# Connectivity Analysis for Memory Recall
+# Structural and Functional Connectivity Predict Memory Enhancement by Direct Brain Stimulation
 
-## Project Overview
+## Overview
 
-This project investigates the relationship between brain connectivity (Structural and Functional) and memory recall performance. Guided by the draft paper *Structural and Functional Connectivity Predict the Effects of Direct Brain Stimulation on Memory*, the analysis focuses on how the congruence between structural networks and functional activation maps relates to memory outcomes, specifically under different stimulation conditions (Close vs. Random).
+This repository contains the analysis pipeline used in the study **“Structural and Functional Connectivity Predict the Effects of Direct Brain Stimulation on Memory.”** The project investigates how the *network embedding* of stimulation targets—quantified using normative **structural connectivity**, **functional connectivity**, and their **structure–function congruence**—determines inter-individual variability in stimulation-induced memory enhancement.
 
-## Pipeline Description
-
-The analysis pipeline is implemented in MATLAB and organized into three main stages. The scripts are located in `src/pipeline/`.
-
-### 1. Structural Connectivity (S1)
-
-**Script**: `S1_StructuralConnectivity.m`
-
-* **Purpose**: To characterize the underlying structural scaffold of the brain and correlate nodal structural strength with memory performance.
-* **Methods**:
-  * **Input**: Individual probabilistic tractography matrices (from `data/NeMo/`).
-  * **Analysis**: Calculates the Mean Structural Connectivity (SC) and Coefficient of Variation (CV) across subjects. It then performs a permutation-based correlation (Kendall's tau) between nodal degree and `delta_recall` scores for 'All', 'Close', and 'Random' groups.
-  * **Key Output**: `Mean_StructuralConnectivity.nii` (Average SC map), `StructuralConnectivity_close_r.nii` (Correlation map for Close group).
-
-### 2. Network Congruence (S2)
-
-**Script**: `S2_NetworkCongruence.m`
-
-* **Purpose**: To quantify the spatial "match" (congruence) between the functional task activation network and the structural connectivity network. The hypothesis is that higher congruence predicts better recall.
-* **Methods**:
-  * **Input**: Word List (WL) activation map (`WL_Active-rest_HC_1mm.nii`).
-  * **Analysis**:
-    * Define **WL Network**: Top $K$ activated regions.
-    * Define **SC Network**: Regions structurally connected to the WL Network above a strength threshold.
-    * **Metric**: Computes the **Dice Coefficient** between WL and SC networks across a range of thresholds.
-    * **Statistics**: Correlates Dice coefficients with `delta_recall` using Spearman correlation, applying FDR correction for multiple comparisons.
-  * **Key Output**: `Dice_r_close.tiff` (Matrix plot of correlations between Congruence and Recall).
-
-### 3. Functional Connectivity (S3)
-
-**Script**: `S3_FunctionalConnectivity.m`
-
-* **Purpose**: To likely functional features that drive memory performance using Resting-state and Task-based connectivity.
-* **Methods**:
-  * **Input**: Pre-computed electrode and atlas ROI signals.
-  * **Analysis**:
-    * Computes Functional Connectivity (FC) matrices (Pearson correlation) for 'Rest' and 'WL' (Task) conditions.
-    * Averages FC maps across healthy controls to create normative templates.
-    * Correlates individual patient FC patterns with `delta_recall`.
-    * **Feature Selection**: Identifies top predictive features (edges/nodes) in the 'Close' group for further analysis.
-  * **Key Output**: `Mean_Rest_FC.tiff`, `Func_feature.mat` (Top 10 features).
+The primary focus is on **left lateral temporal cortex (LTC)** stimulation during a verbal free-recall task, contrasting **closed-loop (state-dependent)** stimulation with **random (open-loop)** stimulation. Consistent with the manuscript, the central hypothesis is that **memory enhancement emerges when stimulation is delivered during vulnerable encoding states and propagates along structural pathways embedded within a distributed verbal-encoding network**.
 
 ---
 
-## Data Directory Structure (`data/`)
+## Key Concepts and Definitions
 
-The `data/` folder contains all necessary inputs for the pipeline.
+* **Closed-loop stimulation**: Electrical stimulation triggered in real time by a classifier detecting low encoding states.
+* **Random stimulation**: Stimulation delivered at randomly selected encoding events, independent of brain state.
+* **Stimulation-related memory change (Δ recall)**: Difference in recall performance between stimulation and non-stimulation lists.
+* **Structural connectivity (SC)**: Normative diffusion tractography–based connectivity profiles estimated using the NeMo framework.
+* **Functional connectivity (FC)**: Normative task-based fMRI connectivity during verbal encoding.
+* **Structure–function congruence**: Spatial overlap between a stimulation site’s structural connectivity profile and a normative verbal-encoding activation network, quantified using the Dice coefficient.
 
-* **NeMo/**: Contains pre-processed structural connectivity matrices for each subject (`*ifod2act_chacoconn_cocommp438subj_mean.csv`).
-* **MNI_ROI/**: Contains ROI definitions and mask files used for signal extraction.
-* **Atlases/Templates**:
-  * `cocommp438_dil*.nii`: Parcellation atlases (dilated versions) used for mapping data to brain regions.
-  * `WL_Active-rest_HC_1mm.nii`: Average functional activation map for the Word List task.
-* **Clinical Data**:
-  * `subjects.xlsx`: Master spreadsheet containing patient IDs, group assignments (`randomstim`: 0=Close, 1=Random), and behavioral scores (`delta_recall`).
-  * `Nemo2HCP360.xlsx`: Mapping file for visualization on HCP surfaces.
-* **Signals**:
-  * `HC_Parcels_ROI_signal.mat`: Pre-extracted timeseries for atlas parcels.
-  * `HC_electrode_signal.mat`: Pre-extracted timeseries for electrodes.
+---
 
-## Outputs and Results (`outputs/`)
+## Analysis Pipeline
 
-Results are organized by analysis module.
+All analyses are implemented in **MATLAB** and organized into three modules that directly correspond to the main analytical components of the paper.
 
-### `outputs/StructuralConnectivity/`
+### S1. Structural Connectivity of Stimulation Sites
 
-* `Mean_StructuralConnectivity.nii`: The group-average structural connectivity strength map.
-* `CV_StructuralConnectivity.nii`: Coefficient of Variation map showing inter-subject variability.
-* `StructuralConnectivity_[group]_r.nii`: Map of correlations between SC degree and recall for a specific group.
-* `Node_[group]_r_permu.nii`: Significant clusters after permutation testing.
+**Script**: `S1_StructuralConnectivity.m`
 
-### `outputs/NetworkCongruence/`
+**Goal**
+To determine whether the structural embedding of stimulation sites predicts stimulation-related memory enhancement, and whether this relationship depends on stimulation mode.
 
-* `WL_node_map.nii`: The defined functional network derived from the activation map.
-* `Dice_r_[group].tiff`: Heatmaps showing the correlation (R-value) between Network Congruence (Dice) and Recall.
-  * **X-axis**: Threshold for defining the Functional Network (`wlLevels`).
-  * **Y-axis**: Threshold for defining the Structural Network (`connLevels`).
-  * **Markers**: `*` (p<0.05 uncorrected), `**` (FDR significant).
+**Methods**
 
-### `outputs/FunctionalConnectivity/`
+* Input: Normative probabilistic tractography matrices generated with the **NeMo Tool** (HCP-based diffusion data).
+* Each stimulation site is modeled as a 12 mm sphere in MNI space.
+* Pairwise ChaCo values are aggregated to derive a parcel-wise structural connectivity strength profile.
+* Correlation analysis (Kendall’s τ) relates structural connectivity strength to Δ recall separately for:
 
-* `Mean_Rest_FC.tiff` / `Mean_WL_FC.tiff`: Average functional connectivity maps for Rest and Task conditions.
-* `[Condition]_[Group]_r.tiff`: Correlation surface maps showing relationships between FC and Recall.
-* `Func_feature.mat`: A MATLAB data file containing the top 10 weighted features (parcels/edges) identified from the 'Close' group analysis, used for downstream processing.
+  * Closed-loop stimulation
+  * Random stimulation
+* Family-wise error is controlled using permutation-based **Tmax correction**.
+
+**Key Outputs**
+
+* Group-level structural connectivity maps
+* Statistical maps identifying regions whose connectivity predicts memory enhancement in the closed-loop condition
+
+---
+
+### S2. Structure–Function Congruence with the Verbal-Encoding Network
+
+**Script**: `S2_NetworkCongruence.m`
+
+**Goal**
+To test whether stimulation sites whose structural projections align with a normative verbal-encoding network yield greater memory enhancement.
+
+**Methods**
+
+* A normative verbal-encoding network is derived from task-based fMRI (word > rest contrast) in healthy participants.
+* Structural connectivity maps from each stimulation site are thresholded across a range of values.
+* Functional activation maps are thresholded across a range of top-percentile levels.
+* Binary overlap between structural and functional maps is quantified using the **Dice similarity coefficient**.
+* Spearman correlations relate Dice values to Δ recall for closed-loop and random stimulation.
+* Multiple comparisons across threshold grids are controlled using **FDR**.
+
+**Key Outputs**
+
+* Dice–memory correlation matrices
+* Visualizations demonstrating robust structure–function–behavior coupling in closed-loop stimulation only
+
+---
+
+### S3. Functional Connectivity Profiles
+
+**Script**: `S3_FunctionalConnectivity.m`
+
+**Goal**
+To assess whether normative functional connectivity alone predicts stimulation-related memory enhancement.
+
+**Methods**
+
+* Normative task-based functional connectivity is computed from healthy participants performing a verbal encoding task.
+* Pearson correlations relate functional connectivity strength to Δ recall.
+* Permutation-based correction is applied across all parcels.
+
+**Key Result (Consistent with the Paper)**
+Although functional connectivity shows qualitative overlap with structural effects, **no functional connectivity effects survive multiple-comparison correction**, and FC does not independently predict memory enhancement in multivariate models.
+
+---
+
+## Directory Structure
+
+```
+├── src/
+│   └── pipeline/
+│       ├── S1_StructuralConnectivity.m
+│       ├── S2_NetworkCongruence.m
+│       └── S3_FunctionalConnectivity.m
+│
+├── data/
+│   ├── NeMo/                  # Normative structural connectivity matrices
+│   ├── Atlases/               # Parcellations and templates (e.g., 438-region atlas)
+│   ├── fMRI/                  # Normative verbal-encoding activation and FC data
+│   └── subjects.xlsx          # Behavioral and stimulation metadata
+│
+└── outputs/
+    ├── StructuralConnectivity/
+    ├── NetworkCongruence/
+    └── FunctionalConnectivity/
+```
+
+---
+
+## Interpretation and Scope
+
+This codebase is designed to reproduce the **network-level analyses** reported in the manuscript. It is not intended to provide a clinical closed-loop stimulation system, but rather to:
+
+* Quantify how stimulation targets are embedded within large-scale memory networks
+* Disentangle the roles of stimulation timing, structural connectivity, and functional connectivity
+* Provide a reproducible framework for **network-guided neuromodulation research**
+
+Normative connectivity datasets are used throughout; patient-specific connectomes are not required to run the pipeline.
+
+---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Both the source code (`src/`) and data outputs (`outputs/`, `data/`) are available for use under this license.
+This project is released under the **MIT License**. The code may be reused and adapted for academic research with appropriate citation.
+
+---
+
+## Citation
+
+If you use this code, please cite the corresponding paper:
+
+> **[Citation to be added after publication]**
+
+A BibTeX entry and DOI will be inserted here once the article is formally published.
