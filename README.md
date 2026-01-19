@@ -32,7 +32,7 @@ To determine whether the structural embedding of stimulation sites predicts stim
 
 **Methods**
 
-* **Input**: Normative probabilistic tractography matrices generated with the [NeMo Tool](https://kuceyeski-wcm-web.s3.amazonaws.com/upload.html) (HCP-based diffusion data).
+* Normative probabilistic tractography matrices generated with the [NeMo Tool](https://kuceyeski-wcm-web.s3.amazonaws.com/upload.html) (HCP-based diffusion data).
 * Each stimulation site is modeled as a 12 mm sphere in MNI space.
 * Pairwise ChaCo (Change in Connectivity) values are aggregated to derive parcel-wise structural connectivity strength profiles.
 * Correlation analyses (Kendall’s τ) relate structural connectivity strength to Δ recall separately for:
