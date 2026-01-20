@@ -99,10 +99,11 @@ Although functional connectivity shows qualitative overlap with structural effec
 │       └── S3_FunctionalConnectivity.m    # Functional connectivity–memory associations
 │
 ├── data/
-│   ├── NeMo/                       # Normative structural connectivity matrices (ChaCo outputs)
+│   ├── NeMo/                       # Normative structural connectivity matrices (Nemo outputs)
+│   ├── MNI_ROI/                    # Contains ROI definitions of stimulation site (12 mm sphere) in MNI space
 │   ├── cocommp438*                 # Parcellations and templates (438-region atlas variants)
-│   ├── HC_Parcels_ROI_signal.mat   # Pre-extracted fMRI timeseries for atlas parcels (healthy controls)
-│   ├── HC_electrode_signal.mat     # Pre-extracted fMRI timeseries for stimulation-site ROIs
+│   ├── HC_Parcels_ROI_signal.mat   # Pre-extracted fMRI timeseries for atlas parcels (in healthy controls)
+│   ├── HC_electrode_signal.mat     # Pre-extracted fMRI timeseries for stimulation-site ROIs(in healthy controls)
 │   ├── WL_Active-rest_HC_1mm.nii   # Normative functional activation map (Word List > Rest)
 │   └── subjects.xlsx               # Behavioral, stimulation, and session-level metadata
 │
