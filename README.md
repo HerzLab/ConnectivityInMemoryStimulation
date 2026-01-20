@@ -129,16 +129,6 @@ Although functional connectivity shows qualitative overlap with structural effec
 
 ---
 
-## Interpretation and Scope
-
-This codebase is designed to reproduce the **network-level analyses** reported in the manuscript. It is not intended to provide a clinical closed-loop stimulation system, but rather to:
-
-* Quantify how stimulation targets are embedded within large-scale memory networks
-* Disentangle the roles of stimulation timing, structural connectivity, and functional connectivity
-* Provide a reproducible framework for **network-guided neuromodulation research**
-
----
-
 ## License
 
 This project is released under the **MIT License**. The code may be reused and adapted for academic research with appropriate citation.
