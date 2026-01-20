@@ -116,14 +116,14 @@ Although functional connectivity shows qualitative overlap with structural effec
     │
     ├── NetworkCongruence/
     │   └── Dice_r_[group].tiff                    # Heatmaps of Dice–Δrecall correlations
-    │       # X-axis: functional network thresholds (wlLevels)
-    │       # Y-axis: structural connectivity thresholds (connLevels)
+    │       # X-axis: Normative verbal-encoding network thresholds 
+    │       # Y-axis: Structural connectivity thresholds
     │       # Markers: * p < 0.05 uncorrected; ** FDR q < 0.05
     │
     └── FunctionalConnectivity/
         ├── Mean_Rest_FC.tiff                      # Normative resting-state FC map
         ├── Mean_WL_FC.tiff                        # Normative task-based FC (Word List)
-        ├── [Condition]_[Group]_r_p0p05_uncorr.tiff# FC–Δrecall correlation maps
+        ├── [Condition]_[Group]_r*                 # FC–Δrecall correlation maps
         └── Func_feature.mat                       # Top weighted parcels/edges from closed-loop analysis
 ```
 
