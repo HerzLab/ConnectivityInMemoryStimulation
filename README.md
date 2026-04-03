@@ -139,4 +139,4 @@ This project is released under the **MIT License**. The code may be reused and a
 
 If you use this code, please cite the corresponding paper:
 
-> **[Citation to be added after publication]**
+> **Zhang Q, Ezzyat Y, Cao R, Javidi SS, Sperling MR, Kahana MJ, Tracy JI, Herz N. Structural and Functional Connectivity Predict the Effects of Direct Brain Stimulation on Memory. bioRxiv [Preprint]. 2026 Mar 19:2026.03.17.712408. doi: 10.64898/2026.03.17.712408. PMID: 41890041; PMCID: PMC13015471.**
