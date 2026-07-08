@@ -1,8 +1,8 @@
-# Structural and Functional Connectivity Predict Memory Enhancement by Direct Brain Stimulation
+# Structural network embedding predicts memory outcomes of closed-loop brain stimulation
 
 ## Overview
 
-This repository contains the analysis pipeline used in the study **“Structural and Functional Connectivity Predict the Effects of Direct Brain Stimulation on Memory.”** The project examines how the *network embedding* of stimulation targets, quantified using normative **structural connectivity**, **functional connectivity**, and **structure–function congruence**, accounts for inter-individual variability in stimulation-induced memory enhancement.
+This repository contains the analysis pipeline used in the study **“Structural network embedding predicts memory outcomes of closed-loop brain stimulation.”** The project examines how the *network embedding* of stimulation targets, quantified using normative **structural connectivity**, **functional connectivity**, and **structure–function congruence**, accounts for inter-individual variability in stimulation-induced memory enhancement.
 
 The analyses focus on **left lateral temporal cortex (LTC)** stimulation during a verbal free-recall task, contrasting **closed-loop (state-dependent)** and **random (open-loop)** stimulation paradigms.
 
